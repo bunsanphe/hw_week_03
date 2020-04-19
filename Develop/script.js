@@ -10,7 +10,7 @@ function start() {
 
 var pwLength = 0;
 var lowerCase = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"],
-    specialChar = ["@", "$", "!", "-"],
+    specialChar = ["@", "$", "!", "-","&"],
     upperCase = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
     numeric = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -32,36 +32,47 @@ function pwLengthValidate(pwLength) {
 
 function genPW(options) {
     var password = "";
-    var possibleChar = [];
+    var possibleChar = [],
+        reqField = [];
+    
 
     if(options.lowerCaseOp) {
         possibleChar = possibleChar.concat(lowerCase);
+        reqField.push(lowerCase[Math.floor(Math.random() * lowerCase.length)])
     }
 
     if(options.upperCaseOp) {
         possibleChar = possibleChar.concat(upperCase);
+        reqField.push(upperCase[Math.floor(Math.random() * upperCase.length)])
     }
 
     if(options.numericOp) {
         possibleChar = possibleChar.concat(numeric);
+        reqField.push(numeric[Math.floor(Math.random() * numeric.length)])
     }
 
     if(options.specialCharOp) {
         possibleChar = possibleChar.concat(specialChar);
+        reqField.push(specialChar[Math.floor(Math.random() * specialChar.length)])
     }
     console.log(possibleChar);
 
     for(var i = 0; i <= pwLength-1; i++) {
-        password = password + possibleChar[Math.floor(Math.random() * possibleChar.length)];
+        if(reqField[i]) {
+            password = password + reqField[i];
+        }
+        else {
+            password = password + possibleChar[Math.floor(Math.random() * possibleChar.length)];
+        }
     }
     return password;
 }
-console.log(genPW(options));
-
+// console.log(genPW(options));
+ 
 
 // // Add event listener to generate button
 // generateBtn.addEventListener("click", isPWLenghtCorrect);
 
 // text box dsiplay area
-document.getElementById("password").placeholder = genPW(options);
+document.getElementById("password").value = genPW(options);
 }
